@@ -20,8 +20,12 @@ app.get('/api/challonge/:id', (req, res) => {
     axios.get(`https://pomegranatron:qRuqnEF3gOqILOkbPfdzDFrJ1Ct4P8HjdbWOSzCq@api.challonge.com/v1/tournaments/${req.params.id}/participants.json`).then(response => {
         response.data.forEach(item => {
 
+            let tag = item.participant.name.toUpperCase()
+            tag = tag.replace(/\s+/g, '');
+
             let newplayer = {
-                tag: item.participant.name,
+                tag: tag,
+                displayName: item.participant.name,
                 id: item.participant.id,
                 finalrank: item.participant.final_rank,
                 score: 0,
@@ -88,7 +92,9 @@ app.get('/api/challonge/:id', (req, res) => {
                 let timestamp = date.getTime();
                 
                 let event = {
-                    timestamp: timestamp,
+                    name: response.data.tournament.name,
+                    date: timestamp,
+                    id: req.params.id,
                     players: players
                 }
 

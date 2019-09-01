@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import axios from "axios"
 import Merge from "./components/Merge"
+import DisplayData from "./components/DisplayData"
+import styles from "./styles/styles.css"
 
 const API_KEY = "qRuqnEF3gOqILOkbPfdzDFrJ1Ct4P8HjdbWOSzCq";
 const username = "pomegranatron"
@@ -10,6 +12,8 @@ const username = "pomegranatron"
 
 let newData
 let oldData
+let tourneyId
+
 function App() {
   const [merger, setmerger] = useState(<></>)
 
@@ -17,21 +21,22 @@ function App() {
   function handleForm(event) {
     event.preventDefault()
     console.log(event.target.tournament.value)
-    let url = event.target.tournament.value
-    url = url.replace("https://challonge.com/", "")
-    console.log(url)
-    axios.get("http://localhost:8080/api/challonge/" + url).then(response => {
+    tourneyId = event.target.tournament.value
+    tourneyId = tourneyId.replace("https://challonge.com/", "")
+    tourneyId = tourneyId.replace("http://www.challonge.com/", "")
+    
+    axios.get("http://localhost:8080/api/challonge/" + tourneyId).then(response => {
 
       newData = response.data
       console.log(newData.players)
       axios.get("http://localhost:8080/api/data").then(response => {
         
         oldData = response.data
-        let foundDate = oldData.dates.filter(date => {
-          return date === newData.timestamp
+        let foundId = oldData.events.filter(event => {
+          return event.id === newData.id
         })
 
-        if (foundDate.length > 0) {
+        if (foundId.length > 0) {
           console.log("Tournament already added")
           return 0;
         }
@@ -75,29 +80,73 @@ function App() {
       })
 
       if (newDataIndex != null) {
-        oldData.players[oldDataIndex].brackets.push({
+        oldData.players[oldDataIndex].displayName = newData.players[newDataIndex].displayName;
+        oldData.players[oldDataIndex].events.push({
           score: newData.players[newDataIndex].score,
-          timestamp: newData.timestamp
+          id: tourneyId
         })
       } else {
         let newplayer = {
           tag: newData.players[index].tag,
-          brackets:[{
+          displayName: newData.players[index].displayName,
+          events:[{
             score: newData.players[index].score,
-            timestamp: newData.timestamp,
+            id: tourneyId,
           }]
         }
         oldData.players.push(newplayer);
       }
     })
 
-    oldData.dates.push(newData.timestamp)
+    let newEventdata = {
+      name: newData.name,
+      id: newData.id,
+      date: newData.date,
+    }
+
+    oldData.events.push(newEventdata)
+
+    oldData.events = SortEvents(oldData.events)
+    console.log(oldData.events)
+
+    setmerger(<></>)
 
     console.log(oldData)
     axios.post("http://localhost:8080/api/data", oldData).then(response => {
       console.log(response);
     })
 
+  }
+
+  function SortEvents(eventArray) {
+    let newArray = eventArray.sort((a, b) => {
+      return a.date - b.date
+    })
+
+    return newArray
+  }
+
+  function SortScores() {
+    axios.get("http://localhost:8080/api/data").then(response => {
+      oldData = response.data;
+
+      oldData.players.forEach(player => {
+        let sortedEvents = []
+        oldData.events.forEach((event, index) => {
+          player.events.forEach(playedEvent => {
+            if (playedEvent.id === event.id) {
+              sortedEvents.push(playedEvent);
+            }
+          })
+        })
+
+        player.events = sortedEvents;
+      })
+
+      axios.post("http://localhost:8080/api/data", oldData).then(response => {
+        console.log(response);
+      })
+    })
   }
 
   return (
@@ -119,7 +168,8 @@ function App() {
         <button type="submit">Submit</button>
 
       </form>
-      
+      <button onClick={SortScores}>Sort Data</button>
+      <DisplayData></DisplayData>
 
     </div>
   );
