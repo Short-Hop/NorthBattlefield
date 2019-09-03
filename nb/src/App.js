@@ -5,6 +5,8 @@ import axios from "axios"
 import Merge from "./components/Merge"
 import DisplayData from "./components/DisplayData"
 import styles from "./styles/styles.css"
+import Nav from "./components/Nav"
+import Home from "./components/Home"
 
 const API_KEY = "qRuqnEF3gOqILOkbPfdzDFrJ1Ct4P8HjdbWOSzCq";
 const username = "pomegranatron"
@@ -17,7 +19,6 @@ let tourneyId
 function App() {
   const [merger, setmerger] = useState(<></>)
 
-  
   function handleForm(event) {
     event.preventDefault()
     console.log(event.target.tournament.value)
@@ -151,6 +152,8 @@ function App() {
 
   return (
     <div className="App">
+      <Nav></Nav>
+      <Home></Home>
       {merger}
 
       <form onSubmit={handleForm}>
@@ -169,7 +172,7 @@ function App() {
 
       </form>
       <button onClick={SortScores}>Sort Data</button>
-      <DisplayData></DisplayData>
+      {/* <DisplayData></DisplayData> */}
 
     </div>
   );
