@@ -1,23 +1,47 @@
+body {
+    font-family: 'Muli', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
 td {
     border: solid 1px black;
+}
+
+button {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 3vw;
+    font-size: 5vw;
+    margin: 5vw;
+    transition-duration: 0.1s;
+    &:hover {
+        color: black;
+        background-color: white;
+        transition-duration: 0.1s;
+    }
 }
 
 .nav {
     position: absolute;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    
+    width: 90%;
     background-color: rgba($color: #000000, $alpha: 0.4);
     justify-content: space-evenly;
-
+    padding: 0px 5vw;
+    
     .links {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
+        align-items: center;
     }
 
     img {
-        height: 10vh;
+        height: 7vh;
         width: auto;
         object-fit: contain;
     }
@@ -25,18 +49,21 @@ td {
     h5 {
         color: white;
         &:hover {
-            border-bottom: solid green;
+            border-bottom: solid #0044ff;
         }
-        
+    }
+
+    .selected {
+        border-bottom: solid #0044ff;
     }
 }
 
 .home {
 
-
     .hero {
         color: white;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
@@ -55,4 +82,26 @@ td {
         background-position: center;
         background-size: cover;
     }
+
+    h2 {
+        margin: 0px;
+        font-size: 8vw;
+    }
+
+    h1 {
+        margin: 0px;
+        font-size: 15vw;
+    }
+    
+}
+
+.footer {
+    display: flex;
+    padding: 0px 5vw;
+    position: fixed;
+    bottom: 0px;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    width: 90%;
+    color: white;
+    justify-content: flex-end;
 }

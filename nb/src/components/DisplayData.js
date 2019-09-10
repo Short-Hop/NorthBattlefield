@@ -6,19 +6,12 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 let oldData
 function DisplayData(props) {
-
-    const [data, setdata] = useState(
-        {
-            events: [],
-            players: [],
-        }
-    )
     const [options, setoptions] = useState({})
 
     useEffect(()=> {
         axios.get("http://localhost:8080/api/data").then(response => {
             oldData = response.data
-            setdata(oldData)
+
 
             let finalPlayerArray = []
 
@@ -85,15 +78,10 @@ function DisplayData(props) {
                         graphdata.y = getPRforDate(player, date)
                         newAverageData.dataPoints.push(graphdata)
                     }
-                    // console.log("His Previous Score was " + newAverageData.scores[newAverageData.scores.length - 1])
-                    // newAverageData.scores.push(getPRforDate(player, date))
-                    
                 })
                 finalPlayerArray.push(newAverageData);
             })
-            // console.log(allDates)
 
-            // console.log(filteredPlayers);
             console.log(finalPlayerArray)
             let newoptions = {
                 animationEnabled: true,	
@@ -179,51 +167,11 @@ function DisplayData(props) {
         return averageScore;
     }
 
-    
-
-
     return (
         <div>
             <CanvasJSChart options = {options} />
         </div>
-			
-	
     )
-    
-    
-    
-    
-    
-    // return (
-    //     <div>
-    //         <table>
-    //             <tbody>
-    //                 <tr>
-    //                     <th>Tag</th>
-    //                     <th>Events Entered</th>
-    //                     <th>Scores</th>
-    //                 </tr>
-    //             </tbody>
-                
-    //             {data.players.map(player => {
-    //             return (
-    //                 <tr>
-    //                     <td>{player.tag}</td>
-    //                     <td>{player.events.length}</td>
-    //                     <td>
-    //                         {player.events.map(event => {
-    //                              return (
-    //                                  <div>{Math.round(event.score * 100) / 100}</div>
-    //                              )
-    //                          })}
-    //                      </td>
-    //                 </tr>
-    //             )
-    //         })}
-    //         </table>
-            
-    //     </div>
-    // )
 }
 
 export default DisplayData
