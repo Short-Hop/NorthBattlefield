@@ -149,7 +149,7 @@ function App() {
   }
 
   return (
-    <div className="pr">
+    <div className="admin">
       {merger}
 
       <form onSubmit={handleForm}>

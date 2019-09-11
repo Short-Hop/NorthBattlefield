@@ -43,6 +43,7 @@ button:hover {
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
   padding: 0px 5vw;
+  z-index: 2;
 }
 
 .nav .links {
@@ -123,5 +124,32 @@ button:hover {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+}
+
+.footer h5 {
+  color: white;
+}
+
+.pr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: white;
+  background-color: #111111;
+}
+
+.pr .chart {
+  width: 90%;
+}
+
+.pr .nav {
+  position: initial;
 }
 /*# sourceMappingURL=styles.css.map */

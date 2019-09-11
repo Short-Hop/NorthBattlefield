@@ -33,6 +33,7 @@ button {
     background-color: rgba($color: #000000, $alpha: 0.4);
     justify-content: space-evenly;
     padding: 0px 5vw;
+    z-index: 2;
     
     .links {
         display: flex;
@@ -104,4 +105,28 @@ button {
     width: 90%;
     color: white;
     justify-content: flex-end;
+    h5 {
+        color: white;
+    }
+    
+}
+
+.pr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    background-color: #111111;
+
+    .chart {
+        // align-self: flex-start;
+        width: 90%;
+    }
+    .nav {
+        position: initial;
+    }
+
+    .top10 {
+        dis
+    }
 }

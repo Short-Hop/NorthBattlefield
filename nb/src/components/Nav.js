@@ -9,7 +9,7 @@ function Nav(props) {
         if (props.match.path === "/home") {
                 setnavLinks(
                     <div className="links">
-                        <img src={logo}></img>
+                        <Link to="/home"><img src={logo}></img></Link>
                         <Link to="/home"><h5 className="selected">Home</h5></Link>    
                         <Link to="/events"><h5>Events</h5></Link>
                         <Link to="/PR"><h5>Power Rankings</h5></Link>
@@ -18,7 +18,7 @@ function Nav(props) {
         } else if (props.match.path === "/events") {
             setnavLinks(
                 <div className="links">
-                    <img src={logo}></img>
+                    <Link to="/home"><img src={logo}></img></Link>
                     <Link to="/home"><h5 >Home</h5></Link>    
                     <Link to="/events"><h5 className="selected">Events</h5></Link>
                     <Link to="/PR"><h5>Power Rankings</h5></Link>
@@ -27,7 +27,7 @@ function Nav(props) {
         } else if (props.match.path === "/pr") {
             setnavLinks(
                 <div className="links">
-                    <img src={logo}></img>
+                    <Link to="/home"><img src={logo}></img></Link>
                     <Link to="/home"><h5 >Home</h5></Link>    
                     <Link to="/events"><h5>Events</h5></Link>
                     <Link to="/pr"><h5 className="selected">Power Rankings</h5></Link>

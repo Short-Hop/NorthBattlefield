@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import CanvasJSReact from "./canvasjs.react";
+import Nav from "./Nav"
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 let oldData
 function DisplayData(props) {
     const [options, setoptions] = useState({})
+    const [rankings, setrankings] = useState([])
 
     useEffect(()=> {
         axios.get("http://localhost:8080/api/data").then(response => {
@@ -61,7 +64,7 @@ function DisplayData(props) {
                                 betweeenScore = 0;
                             }
                         } else {
-                            console.log(newAverageData.dataPoints.length)
+                            
                             if (newAverageData.dataPoints[newAverageData.dataPoints.length - 1]) {
                                 betweeenScore = newAverageData.dataPoints[newAverageData.dataPoints.length - 1].y
                                 missedDates++;
@@ -82,7 +85,7 @@ function DisplayData(props) {
                 finalPlayerArray.push(newAverageData);
             })
 
-            console.log(finalPlayerArray)
+            
             let newoptions = {
                 animationEnabled: true,	
                 zoomEnabled: true,
@@ -98,8 +101,18 @@ function DisplayData(props) {
                 },
                 data: []
             }
+            finalPlayerArray = finalPlayerArray.sort((player1, player2) => {
+                // console.log(player1.dataPoints[player1.dataPoints.length - 1]);
+                // console.log(player1.name);
+                return player2.dataPoints[player2.dataPoints.length - 1].y - player1.dataPoints[player1.dataPoints.length - 1].y
+            })
+
+
             newoptions.data = finalPlayerArray;
+            console.log(finalPlayerArray)
             setoptions(newoptions);
+            setrankings(finalPlayerArray)
+
         })
     },[])
 
@@ -115,9 +128,6 @@ function DisplayData(props) {
             return playedEvent.id === id;
         })
 
-        console.log("Calculating Average for " + event.name)
-        console.log("Index is " + index)
-
         if(index === -1) {
             return -1;
         }
@@ -129,7 +139,6 @@ function DisplayData(props) {
         }
 
         for(let i = startindex; i <= index; i++) {
-            console.log("I is " + i)
             if (i > 0) {
 
                 let currentEvent = oldData.events.findIndex(item => {
@@ -143,33 +152,35 @@ function DisplayData(props) {
                         penaltyPoints++;
                     }
                 }
-
-                console.log(player.tag)
-
-                console.log("Event was: " + oldData.events[currentEvent].name)
-                console.log("Previous event was: " + oldData.events[currentEvent-1].name)
-                
-                console.log("Total Penalty Points: " + penaltyPoints)
-
             }
-            console.log(player.events[i].score)
             totalscore = totalscore + player.events[i].score
-            console.log("Total Score: " + totalscore)
         }
-        
         averageScore = totalscore / ((index - startindex) + 1)
-        
         let penalty = (penaltyPoints * 0.05)
-        console.log(penalty)
-        console.log(averageScore);
-
         averageScore = averageScore - penalty; 
         return averageScore;
     }
 
     return (
-        <div>
-            <CanvasJSChart options = {options} />
+        <div className="pr">
+            <Nav match={props.match}></Nav>
+            <div className="chart">
+                <CanvasJSChart options = {options} />
+            </div>
+            <h1>Top 10</h1>
+            <div className="top10">
+                {rankings.map((player, index) => {
+                    if (index < 10) {
+                        return (
+                            <>
+                            <h2>{index + 1}.  {player.name}</h2>
+                            <h5>Score: {Math.round(player.dataPoints[player.dataPoints.length - 1].y * 100)}</h5>
+                            </>
+                        )
+                    }
+                    
+                })}
+            </div>
         </div>
     )
 }
