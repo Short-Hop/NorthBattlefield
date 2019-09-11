@@ -7,7 +7,8 @@ a {
 }
 
 td {
-    border: solid 1px black;
+    border: solid 1px #555555;
+    text-align: center;
 }
 
 button {
@@ -117,6 +118,7 @@ button {
     align-items: center;
     color: white;
     background-color: #111111;
+    text-align: center;
 
     .chart {
         // align-self: flex-start;
@@ -126,7 +128,11 @@ button {
         position: initial;
     }
 
-    .top10 {
-        dis
+    p {
+        padding: 0px 5vw;
     }
+
+    
+
+    
 }
